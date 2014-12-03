@@ -14,3 +14,5 @@
 #include <netdb.h>
 #include <time.h>
 #include <sys/stat.h>
+
+#define N 6
