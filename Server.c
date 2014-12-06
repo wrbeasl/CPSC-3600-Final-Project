@@ -84,22 +84,22 @@ char *get_http(robot_cmd *command) {
 	char *get_commands = (char *)malloc(65535);
 	switch(command->command) {
 		case 1: 
-			fp = popen("wget http://130.127.192.62:8082/state?id=prevent", "r");
+			fp = popen("curl http://130.127.192.62:8082/state?id=prevent", "r");
 			break;
 		case 2:
 			fp = popen("curl http://130.127.192.62:8084/state?id=prevent", "r");
 			break;
 		case 3:
-			fp = popen("wget http://130.127.192.62:8082/twist?id=prevent&lx=4", "r");
+			fp = popen("curl http://130.127.192.62:8082/twist?id=prevent&lx=4", "r");
 			break;
 		case 4:
 			sleep(command->value);
 			return NULL;
 		case 5:
-			fp = popen("wget http://130.127.192.62:8082/twist?id=prevent&az=30", "r");
+			fp = popen("curl http://130.127.192.62:8082/twist?id=prevent&az=30", "r");
 			break;
 		case 6:
-			fp = popen("wget http://130.127.192.62:8082/twist?id=prevent&lx=0", "r");
+			fp = popen("curl http://130.127.192.62:8082/twist?id=prevent&lx=0", "r");
 			break;
 	}
 	fgets(get_commands, 65535, fp);
