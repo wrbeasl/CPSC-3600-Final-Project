@@ -8,9 +8,9 @@ int main(int argc, char **argv){
 
 	int sock, port, curr_command;
 	char *Servername;
-
+	void *buffer = malloc(sizeof(robot_cmd));
 	struct sockaddr_in serveraddr;
-	robot_cmd command;
+	robot_cmd *command = buffer;
 	if(argc != 3){
 		perror("Error: Client Syntax: ./Client <UDP Hostname> <UDP Port>\n");
 		exit(0);
@@ -57,10 +57,10 @@ int main(int argc, char **argv){
 		}
 	}
 
-	command.command = cmdcode;
-	command.value = cmdvalue;
+	command->command = cmdcode;
+	command->value = cmdvalue;
 
-	sendto(sock, &command, sizeof(command), 0,
+	sendto(sock, buffer, sizeof(command), 0,
 	(struct sockaddr *) &serveraddr, sizeof(serveraddr));
 
 	
