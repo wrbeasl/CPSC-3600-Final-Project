@@ -1,3 +1,10 @@
+/*
+ * TODO: Figure out what we're going to do with messages once they come back
+ * Need some way of identifying what type of data we just received back
+ * 
+ */
+
+
 #include "Common.h"
 #define RECBUFSIZE 65535
 char *Commands[25] = {"GPS","DGPS","MOVE","sleep 5 seconds","STOP", "sleep 1 seconds", "GPS", "DGPS","TURN","sleep", "sleep 1 seconds", 
