@@ -52,7 +52,8 @@ int main(int argc, char **argv){
 		} else {
 			printf("Got");
 		}
-		printf("%s\n", Buffer);
+		robot_cmd *command = (robot_cmd *)Buffer;
+		printf("%d, %d\n", command->command, command->value);
 
 	}
 
