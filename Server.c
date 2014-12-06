@@ -73,6 +73,8 @@ int sendResponse(int sock, int port, struct sockaddr_in client, char *response){
 		perror("Error: Failed to send response to the client.\n");
 		return -1;
 	} else {
+		int i = sendto(sock, response, strlen(response), 0, (struct sockaddr *) &client,
+							sizeof(client));
 		return 0;
 	}
 }
