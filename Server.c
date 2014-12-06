@@ -49,8 +49,9 @@ int main(int argc, char **argv){
 		if((msgSize = recvfrom(sock, Buffer, 65535, 0, (struct sockaddr *) &clientaddr, &clientLen)) < 0){
 			perror("Error: Failed to recieve from client.\n");
 			exit(1);
+		} else {
+			printf("Got");
 		}
-
 		printf("%s\n", Buffer);
 
 	}
