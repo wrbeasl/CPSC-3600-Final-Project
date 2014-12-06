@@ -1,6 +1,7 @@
 #include "Common.h"
 
 int sendResponse(int sock, int port, struct sockaddr_in client, char* response);
+void get_http(robot_cmd *command);
 
 int main(int argc, char **argv){
 
@@ -54,7 +55,8 @@ int main(int argc, char **argv){
 		}
 		robot_cmd *command = (robot_cmd *)Buffer;
 		printf("%d, %d\n", command->command, command->value);
-
+		
+		get_http(command);
 	}
 
 	fflush(stdout);
@@ -71,4 +73,31 @@ int sendResponse(int sock, int port, struct sockaddr_in client, char *response){
 	} else {
 		return 0;
 	}
+}
+
+void get_http(robot_cmd *command) {
+	FILE *fp;
+	char get_commands[65535];
+	switch(command->command) {
+		case 1: 
+			fp = popen("wget http://130.127.192.62:8082/state?id=prevent", "r");
+			break;
+		case 2:
+			fp = popen("wget http://130.127.192.62:8084/state?id=prevent", "r");
+			break;
+		case 3:
+			fp = popen("wget http://130.127.192.62:8082/twist?id=prevent&lx=4", "r");
+			break;
+		case 4:
+			sleep(command->value);
+			return;
+		case 5:
+			fp = popen("wget http://130.127.192.62:8082/twist?id=prevent&az=30", "r");
+			break;
+		case 6:
+			fp = popen("wget http://130.127.192.62:8082/twist?id=prevent&lx=0", "r");
+			break;
+	}
+	
+	pclose(fp);
 }
