@@ -29,14 +29,14 @@ int main(int argc, char **argv){
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_addr.s_addr = inet_addr(Servername);
 	serveraddr.sin_port = port;
-
+/*
 	while(1){
 		if(sendto(sock, Commands[curr_command], sizeof(Commands[curr_command]), 0, (struct sockaddr_in *) &serveraddr, sizeof(serveraddr)) < 0){
 
 		}
 
 	}
-
+*/
 
 	int validcommand = 0;
 	int cmdcode;
