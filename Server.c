@@ -1,5 +1,7 @@
 #include "Common.h"
 
+int sendResponse(int sock, int port, struct sockaddr_in client, char* response);
+
 int main(int argc, char **argv){
 
 	int sock, port;
@@ -7,8 +9,9 @@ int main(int argc, char **argv){
 	char *HostName;
 	struct sockaddr_in serveraddr;
 	struct sockaddr_in clientaddr;
-	int clientLen, msgSize;
-	char *Buffer[65535];
+	unsigned int clientLen;
+	int msgSize;
+	char Buffer[65535];
 
 
 	if(argc != 4){
@@ -28,16 +31,18 @@ int main(int argc, char **argv){
 
 	//Server address setup
 	memset(&serveraddr, 0, sizeof(serveraddr));
-	serveraddr.sin_port = port;
+	serveraddr.sin_port = htons(port);
 	serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serveraddr.sin_family = AF_INET;
 
+	//bind port
 	printf("Binding to port %d\n", port);
-	if(bind(sock, (struct serveraddr *) &serveraddr), sizeof(serveraddr) < 0){
-		perror("Error binding server to port %d\n", port);
+	if(bind(sock, (struct sockaddr *) &serveraddr, sizeof(serveraddr)) < 0){
+		printf("Error binding server to port %d\n", port);
 		exit(2);
 	}
 
+	//for loop infinite
 	for(;;){
 		clientLen = sizeof(clientaddr);
 
@@ -46,10 +51,22 @@ int main(int argc, char **argv){
 			exit(1);
 		}
 
-		
+		printf("%s\n", Buffer);
+
 	}
 
 	fflush(stdout);
 	close(sock);
 	return 0;
+}
+
+
+
+int sendResponse(int sock, int port, struct sockaddr_in client, char *response){
+	if(sendto(sock, response, sizeof(response), 0, (struct sockaddr *) &client, sizeof(&client)) < 0){
+		perror("Error: Failed to send response to the client.\n");
+		return -1;
+	} else {
+		return 0;
+	}
 }
