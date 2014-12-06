@@ -28,7 +28,7 @@ int main(int argc, char **argv){
 	memset(&serveraddr, 0, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_addr.s_addr = inet_addr(Servername);
-	serveraddr.sin_port = port;
+	serveraddr.sin_port = htons(port);
 /*
 	while(1){
 		if(sendto(sock, Commands[curr_command], sizeof(Commands[curr_command]), 0, (struct sockaddr_in *) &serveraddr, sizeof(serveraddr)) < 0){
@@ -60,10 +60,10 @@ int main(int argc, char **argv){
 	command->command = cmdcode;
 	command->value = cmdvalue;
 
-	sendto(sock, buffer, sizeof(command), 0,
+	int i =	sendto(sock, buffer, sizeof(command), 0,
 	(struct sockaddr *) &serveraddr, sizeof(serveraddr));
 
-	
+	printf("Sent %d bytes\n",i);
 
 	return 0;
 }
