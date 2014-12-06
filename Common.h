@@ -25,3 +25,20 @@ typedef struct http_struct {
    int connfd;
    struct sockaddr_in servaddr;
 } http;
+
+typedef struct robot_cmd {
+	int command;
+	int value;
+}robot_cmd;
+
+
+/* Command interface:
+ *
+ * GPS: 1
+ * DGPS: 2
+ * MOVE: 3
+ * SLEEP: 4
+ * TURN: 5
+ * STOP: 6
+ *
+ */
