@@ -13,7 +13,7 @@ char *Commands[25] = {"GPS","DGPS","MOVE","sleep 5 seconds","STOP", "sleep 1 sec
 /* Args: ./client <UDP Hostname> <UDP Port> */
 int main(int argc, char **argv){
 
-	int sock, port, curr_command;
+	int sock, port;
 	char *Servername;
 	void *buffer = malloc(sizeof(robot_cmd));
 	void *recvbuffer = malloc(RECBUFSIZE);
@@ -39,14 +39,6 @@ int main(int argc, char **argv){
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_addr.s_addr = inet_addr(Servername);
 	serveraddr.sin_port = htons(port);
-/*
-	while(1){
-		if(sendto(sock, Commands[curr_command], sizeof(Commands[curr_command]), 0, (struct sockaddr_in *) &serveraddr, sizeof(serveraddr)) < 0){
-
-		}
-
-	}
-*/
 
 	int validcommand = 0;
 	int cmdcode;
@@ -70,14 +62,13 @@ int main(int argc, char **argv){
 	command->command = cmdcode;
 	command->value = cmdvalue;
 
-	int i =	sendto(sock, buffer, sizeof(command), 0,
-	(struct sockaddr *) &serveraddr, sizeof(serveraddr));
+	sendto(sock, buffer, sizeof(command), 0,
+			 (struct sockaddr *) &serveraddr, sizeof(serveraddr));
 
-	printf("Sent %d bytes\n",i);
+	//printf("Sent %d bytes\n",i);
 
 	returnsize = sizeof(returnaddr);
-	recvfrom(sock, recvbuffer, RECBUFSIZE, 0,
-		(struct sockaddr*) &returnaddr, &returnsize);
+	recvfrom(sock, recvbuffer, RECBUFSIZE, 0, NULL, NULL);
 	
 	printf("%s\n",(char*)recvbuffer);
 
