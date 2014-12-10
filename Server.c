@@ -1,3 +1,9 @@
+/*
+ * William Beasley, Chris Ragan, William Boatman, Mike Dozier, Jeff Grabowski
+ * Server.c
+ * UDP Server
+*/
+
 #include "Common.h"
 
 void sendResponse(int sock, struct sockaddr_in client, char* response);
@@ -9,8 +15,6 @@ char *parse_http_response(char *response);
 int main(int argc, char **argv){
 
 	int sock, port;
-	char *RobotID = (char *)malloc(strlen(argv[1]));
-	char *HostName = (char *)malloc(strlen(argv[1]));
 	struct sockaddr_in serveraddr;
 	struct sockaddr_in clientaddr;
 	unsigned int clientLen;
@@ -22,6 +26,9 @@ int main(int argc, char **argv){
 		perror("Error: Invalid Syntax, please use: ./Server <Robot ID> <Robot Hostname> <UDP Port>");
 		exit(0);
 	} 
+
+	char *RobotID = (char *)malloc(strlen(argv[1]));
+	char *HostName = (char *)malloc(strlen(argv[1]));
 
 	port = atoi(argv[3]);
 	memcpy(RobotID, argv[1], strlen(argv[1]));

@@ -7,9 +7,8 @@
 
 #include "Common.h"
 #define RECBUFSIZE 65535
-char *Commands[25] = {"GPS","DGPS","MOVE","sleep 5 seconds","STOP", "sleep 1 seconds", "GPS", "DGPS","TURN","sleep", "sleep 1 seconds", 
-"GPS", "DGPS", "STOP", "sleep 1 seconds", "GPS", "DGPS", "MOVE", "sleep", "STOP", "sleep 1 seconds", "GPS","DGPS" };
-
+int commands[25] = {1, 2, 3, 4, 6, 4, 1, 2, 5, 4, 4, 1, 2, 5, 4, 1, 2, 3, 4, 6, 5, 1, 2};
+int sleepTimes[7] = {5, 1, 0, 1, 1, 0, 1};
 /* Args: ./client <UDP Hostname> <UDP Port> */
 int main(int argc, char **argv){
 
@@ -43,22 +42,14 @@ int main(int argc, char **argv){
 	int validcommand = 0;
 	int cmdcode;
 	int cmdvalue = 0;
+	int j = 0;
 
-	while(!validcommand) {
-		printf("Command? ");
-		scanf("%d", &cmdcode);
-
-		if(cmdcode > 0 && cmdcode < 7)
-		{
-			if(cmdcode == 4)
-			{
-				printf("\nSleep how long? ");
-				scanf("%d",&cmdvalue);
-			}
-		validcommand = 1;
-		}
+for(int i = 0; i < 25; ++i){
+	int cmdcode = commands[i];
+	if(cmdcode == 4){
+		sleep(sleepTimes[j]);
+		continue;
 	}
-
 	command->command = cmdcode;
 	command->value = cmdvalue;
 
@@ -71,6 +62,6 @@ int main(int argc, char **argv){
 	recvfrom(sock, recvbuffer, RECBUFSIZE, 0, NULL, NULL);
 	
 	printf("%s\n",(char*)recvbuffer);
-
+}
 	return 0;
 }
