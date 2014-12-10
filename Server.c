@@ -28,7 +28,7 @@ int main(int argc, char **argv){
 	} 
 
 	char *RobotID = (char *)malloc(strlen(argv[1]));
-	char *HostName = (char *)malloc(strlen(argv[1]));
+	char *HostName = (char *)malloc(strlen(argv[2]));
 
 	port = atoi(argv[3]);
 	memcpy(RobotID, argv[1], strlen(argv[1]));
