@@ -1,19 +1,16 @@
 /*
  * William Beasley, Chris Ragan, William Boatman, Mike Dozier, Jeff Grabowski
- * Server.c
- * UDP Server
-
-
- * TODO: Figure out what we're going to do with messages once they come back
- * Need some way of identifying what type of data we just received back
- * 
+ * Client.c
+ * UDP Client
+ *
  */
 
 
 #include "Common.h"
 #define RECBUFSIZE 65535
-int commands[25] = {1, 2, 3, 4, 6, 4, 1, 2, 5, 4, 4, 1, 2, 5, 4, 1, 2, 3, 4, 6, 5, 1, 2};
-int sleepTimes[7] = {5, 1, 0, 1, 1, 0, 1};
+int commands[22] = {1, 2, 3, 4, 6, 4, 1, 2, 5, 4, 1,
+					 2, 6, 4, 1, 2, 3, 4, 6, 4, 1, 2};
+int sleepTimes[6] = {5, 1, 1, 1, 5, 1};
 /* Args: ./client <UDP Hostname> <UDP Port> */
 int main(int argc, char **argv){
 
@@ -44,29 +41,32 @@ int main(int argc, char **argv){
 	serveraddr.sin_addr.s_addr = inet_addr(Servername);
 	serveraddr.sin_port = htons(port);
 
-	int validcommand = 0;
+	//int validcommand = 0;
 	int cmdcode;
 	int cmdvalue = 0;
 	int j = 0;
 
-for(int i = 0; i < 25; ++i){
-	int cmdcode = commands[i];
-	if(cmdcode == 4){
-		sleep(sleepTimes[j]);
-		continue;
+	for(int i = 0; i < 22; ++i){
+		cmdcode = commands[i];
+		if(cmdcode == 4){
+			sleep(sleepTimes[j]);
+			j++;
+			continue;
+		}
+		command->command = cmdcode;
+		command->value = cmdvalue;
+
+		sendto(sock, buffer, sizeof(command), 0,
+				 (struct sockaddr *) &serveraddr, sizeof(serveraddr));
+
+		//printf("Sent %d bytes\n",i);
+
+		returnsize = sizeof(returnaddr);
+		recvfrom(sock, recvbuffer, RECBUFSIZE, 0, NULL, NULL);
+		if(cmdcode < 3) //cmd is gps or dgps
+		{
+			printf("%s\n",(char*)recvbuffer);
+		}
 	}
-	command->command = cmdcode;
-	command->value = cmdvalue;
-
-	sendto(sock, buffer, sizeof(command), 0,
-			 (struct sockaddr *) &serveraddr, sizeof(serveraddr));
-
-	//printf("Sent %d bytes\n",i);
-
-	returnsize = sizeof(returnaddr);
-	recvfrom(sock, recvbuffer, RECBUFSIZE, 0, NULL, NULL);
-	
-	printf("%s\n",(char*)recvbuffer);
-}
 	return 0;
 }
